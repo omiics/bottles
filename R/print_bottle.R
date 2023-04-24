@@ -12,21 +12,23 @@ R Code Bottle  :-...-:
                |     |
                `-...-'"
   
-  cat(bottle_header, "\n\n")
+  cat(bottle_header, "\n")
   
-  cat("Bottled code:\n")
-  for (line in x$code) {
-    cat("\t", line,"\n")
-  }
+  cli::cli_h1("Bottled code:")
+  cli::cli_code(lines = x$code)
   
   if (!is.null(x$packages)){
-    cat("\nBottled packages:\n\n")
-    cat("\t", x$packages,"\n")
+    cli::cli_h1("Bottled packages:")
+    packages <- cli::cli_vec(x$packages, style = list(
+      "vec-sep" = ", ", "vec-last" = " & "
+      ))
+    cli::cli_text("{packages}")
   }
   
-  cat("\nBottled environment:\n")
-  
-  cat("\n")
-  cat("\t", names(x$env))
+  cli::cli_h1("Bottled environment:")
+  variables <- cli::cli_vec(names(x$env), style = list(
+    "vec-sep" = ", ", "vec-last" = " & "
+  ))
+  cli::cli_text("{variables}")
   
 }

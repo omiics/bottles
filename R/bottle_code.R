@@ -70,8 +70,15 @@ bottle_code <- function(expr, packages = NULL, env = parent.frame()) {
 #'
 bottle_keywords <- function(expr_str) {
   # old regex: "\\w+" (Matches any word)
-  # new regex: "(?<!::)\\b\\w+\\b(?!::\\w+| =|=)" (Matches any variables/function names that are not prefixed by or followed by a namespace ::)
+  # good regex: "(?<!::)\\b\\w+\\b(?!::\\w+| =|=)" (Matches any variables/function names that are not prefixed by or followed by a namespace ::)
+  # better regex: "(?<!::|\\$)\\b\\w+\\b(?!::\\w+| =|=)" (Includes fix for ignoring list variables )
+  # most detailed regex: "(?<!::|:::|\$|"|')\b\w+\b(?!::\w+| =|=|"|'| <-|<-)" ()
   
-  values <- unlist(stringr::str_extract_all(expr_str, "(?<!::)\\b\\w+\\b(?!::\\w+| =|=)"))
-  unique(values)
+  values <- unlist(stringr::str_extract_all(expr_str, "(?<!::|\\$)\\b\\w+\\b(?!::\\w+| =|=)"))
+  values <- unique(values)
+  
+  # Remove any integers
+  
+  # Ignore certain keywords ("if", "for")
+  
 }
