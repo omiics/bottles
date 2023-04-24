@@ -16,6 +16,9 @@ run_bottle.bottle <- function(bottle) {
       
       # Experiment with using box?
       
+      # Skip if package already is loaded (Avoids unloading after the bottle is run)
+      if (package %in% (.packages())) next
+      
       # Library based approach
       suppressPackageStartupMessages(
         get("library")(package, character.only=TRUE)

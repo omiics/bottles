@@ -78,7 +78,11 @@ bottle_keywords <- function(expr_str) {
   values <- unique(values)
   
   # Remove any integers
+  values <- values[is.na(as.numeric(values))]
   
   # Ignore certain keywords ("if", "for")
+  R_keywords <- c("if", "for", "while", "c")
+  values <- values[!(values %in% R_keywords)]
   
+  values
 }
