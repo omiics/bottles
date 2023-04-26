@@ -10,14 +10,28 @@
 #' @return bottle with code inside
 #' @export
 #' 
-bottle_code <- function(expr, packages = NULL, env = parent.frame()) {
+bottle_code <- function(expr, packages = NULL, env = parent.frame(), debug=FALSE) {
+  
+  if (debug) cli::cli_alert_info("Running bottle_code debug mode!")
+  
   bottle_data <- list()
   
   bottle_data$code <- deparse(substitute(expr))
   
+  if (debug) cli::cli_alert_info("Detecting keywords")
+  
   keywords <- bottle_keywords(bottle_data$code)
+  
+  if (debug) cli::cli_alert_info("Found keywords: {.vals {keywords}}")
+  
   active_variables <- keywords[keywords %in% names(env)]
+  
+  if (debug) cli::cli_alert_info("Active variables: {.vals {active_variables}}")
+  
   remaining_keywords <- keywords[!(keywords %in% active_variables)]
+  
+  if (debug) cli::cli_alert_info("Remaining keywords: {.vals {remaining_keywords}}")
+  
   
   # Fetch any values from the environment and make a mini environment to include the data
   bottle_data$env <- mget(active_variables, envir = env)
@@ -28,12 +42,17 @@ bottle_code <- function(expr, packages = NULL, env = parent.frame()) {
     bottle_data$packages <- packages
     
   } else {
+    if (debug) cli::cli_alert_info("Auto detecting keywords")
+    
     # Auto detect what packages are used in the code
     packages <- c()
     
     base_packages <- c("base", "stats", "graphics", "grDevices", "utils", "methods", "datasets")
     
     for (kw in remaining_keywords) {
+      
+      if (debug) cli::cli_alert_info("Checking keyword: {kw}")
+      if (debug) cli::cli_alert_info("Current packages: {.vals {packages}}")
       
       pkg_name <- NULL
       
@@ -43,14 +62,22 @@ bottle_code <- function(expr, packages = NULL, env = parent.frame()) {
         error = function(cond) {}
       )
       
+      if (debug) cli::cli_alert_info("Comes from package: {pkg_name}")
+      
       if (is.null(pkg_name)) next
       if (pkg_name %in% base_packages) next
       if (pkg_name == "") next
       
+      if (debug) cli::cli_alert_info("Passed checks will add package name to packages")
+      
       packages <- c(packages, pkg_name)
     }
     
+    if (debug) cli::cli_alert_info("Reducing to unique package names")
+    
     packages <- unique(packages)
+    
+    if (debug) cli::cli_alert_info("Final detected packages: {.vals {keywords}}")
     
     bottle_data$packages <- packages
     
