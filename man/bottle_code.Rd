@@ -4,14 +4,16 @@
 \alias{bottle_code}
 \title{Bottle code}
 \usage{
-bottle_code(expr, packages = NULL, env = parent.frame())
+bottle_code(expr, packages = NULL, env = parent.frame(), debug = FALSE)
 }
 \arguments{
 \item{expr}{code block that should be bottled}
 
 \item{packages}{Specify which packages should be used to run the code}
 
-\item{env}{Environment that the bottle should be based on. Default is parent environment.}
+\item{env}{Environment that the bottle should be based on. Default is parent environment}
+
+\item{debug}{Run a detailed debug mode to see what steps the function is taking}
 }
 \value{
 bottle with code inside

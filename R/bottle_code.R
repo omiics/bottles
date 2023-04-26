@@ -5,7 +5,8 @@
 #'
 #' @param expr      code block that should be bottled
 #' @param packages  Specify which packages should be used to run the code
-#' @param env       Environment that the bottle should be based on. Default is parent environment.
+#' @param env       Environment that the bottle should be based on. Default is parent environment
+#' @param debug     Run a detailed debug mode to see what steps the function is taking
 #' 
 #' @return bottle with code inside
 #' @export
