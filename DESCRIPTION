@@ -1,6 +1,6 @@
 Package: bottles
 Title: Containerized R code in bottles
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: 
     person("Marni", "Tausen", , "marni.tausen@omiics.com", role = c("aut", "cre"))
 Description: Containerize R code into a small reproducible unit called a bottle. The bottle saves the variables from the environment required to run the code, and captures the packages used for the code.
@@ -8,5 +8,8 @@ License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
 Imports: 
     cli

@@ -82,6 +82,8 @@ R Code Bottle  :-...-:
 {
     if (isTRUE(modify_data)) {
         prep_data <- example_data %>% mutate(y = y * 10)
+    } else {
+        prep_data <- example_data
     }
     p <- ggplot(prep_data, aes(x, y)) + geom_point()
     p + theme_bw()

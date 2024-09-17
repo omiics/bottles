@@ -100,16 +100,26 @@ bottle_keywords <- function(expr_str) {
   # old regex: "\\w+" (Matches any word)
   # good regex: "(?<!::)\\b\\w+\\b(?!::\\w+| =|=)" (Matches any variables/function names that are not prefixed by or followed by a namespace ::)
   # better regex: "(?<!::|\\$)\\b\\w+\\b(?!::\\w+| =|=)" (Includes fix for ignoring list variables )
-  # most detailed regex: "(?<!::|:::|\$|"|')\b\w+\b(?!::\w+| =|=|"|'| <-|<-)" ()
+  # most detailed regex: "(?<!::|:::|\\$|\"|\'|\\%)\\b\\w+\\b(?!::\\w+| *=|\"|\'|\\%| *<-)" (Cleans up the detection even more)
+
+  # (["'])(.*?[^\\])\1 ##
+
+  # Preprocess expression
+  ## Remove all comments
+  ## Remove all strings from consideration
+
+  expr_str <- stringr::str_remove_all(expr_str, "([\"\'])(.*?[^\\\\])\\1") # Match any strings and remove them
+  expr_str <- stringr::str_remove_all(expr_str, stringr::regex("#.*$", multiline = TRUE)) # Match and delete anything that comes after a comment
+
   
-  values <- unlist(stringr::str_extract_all(expr_str, "(?<!::|\\$)\\b\\w+\\b(?!::\\w+| =|=)"))
+  values <- unlist(stringr::str_extract_all(expr_str, "(?<!::|:::|\\$|\"|\'|\\%|~)\\b\\w+\\b(?!::\\w+| *=|\"|\'|\\%| *<-)"))
   values <- unique(values)
-  
+
   # Remove any integers
-  values <- values[is.na(as.numeric(values))]
+  suppressWarnings(values <- values[is.na(as.numeric(values))])
   
   # Ignore certain keywords ("if", "for")
-  R_keywords <- c("if", "for", "while", "c")
+  R_keywords <- c("if", "for", "while", "c", "TRUE", "FALSE")
   values <- values[!(values %in% R_keywords)]
   
   values

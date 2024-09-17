@@ -3,12 +3,7 @@ run_bottle <- function(bottle) UseMethod("run_bottle")
 
 #' @export
 run_bottle.bottle <- function(bottle) {
-  
-  # If there are packages add them all together
-  run_eval <- function(code, env){
-    eval(parse(text = code), envir = env)
-  }
-  
+    
   # Attach any required packages for the bottle
   if (!is.null(bottle$packages)){
     

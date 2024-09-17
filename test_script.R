@@ -1,6 +1,7 @@
 library(devtools)
 library(tidyverse)
 
+install()
 document()
 load_all()
 
@@ -24,7 +25,7 @@ bottle <- bottle_code({
   
   p + theme_bw()
   
-})
+}, debug = TRUE)
 
 bottle
 
@@ -39,8 +40,14 @@ bottle
 
 run_bottle(bottle)
 
-bottle_keywords("
-xlimits <- c(-max(abs(results$log2FoldChange)), max(abs(results$log2FoldChange)))
 
-ggplot2::ggplot(test_data, ggplot2::aes(x = x, y= y)) + ggplot2::geom_point()
-")
+bottle_keywords('{
+
+  # Doing something here
+  "Some very long string"
+
+  1 + 1 # Math
+
+  \'Some other string\'
+
+}')
