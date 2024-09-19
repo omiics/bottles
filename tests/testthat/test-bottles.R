@@ -13,7 +13,7 @@ test_that("Test keyword detection", {
     }')
 
     expect_equal(
-        keywords, 
+        keywords$keywords, 
         c(
             "input_table", "filter", "Size", "size_filter", "Category", "categories", 
             "table_information", "ggplot", "aes", "geom_point", "theme_bw"
@@ -35,7 +35,7 @@ test_that("Test keyword detection", {
     }')
 
     expect_equal(
-        keywords,
+        keywords$keywords,
         c("Data", "to_filter", "ggplot", "aes", "x", "y", "geom_point", "theme_bw")
     )
 
@@ -56,8 +56,33 @@ test_that("Test keyword detection", {
     }')
 
     expect_equal(
-        keywords,
+        keywords$keywords,
         c("x")
+    )
+
+    keywords <- bottle_keywords('{
+
+        # Comment that should be skipped
+        zap <- c("zip", "zap", "zippy" ,"zappy")
+
+        # Data is shared and should not be included
+        shared(big_dataset) %>% 
+            filter(!(name %in% !!ignore(zap))) %>%
+            filter(sum > !!unshare(filter_value))
+
+    }', crate_storage = TRUE)
+
+    expect_equal(
+        keywords$keywords,
+        c(
+            "shared", "filter", "name", "ignore",
+            "sum", "unshare", "filter_value"
+        )
+    )
+
+    expect_equal(
+        keywords$unshare,
+        c("filter_value")
     )
 
 })
@@ -116,6 +141,10 @@ test_that("Creation, running and saving bottles works", {
 
     # Call again without package in namespace
     value <- run_bottle(bottle)
+
+    expect_s3_class(value, c("tbl"))
+
+    expect_equal(value$x, c(2,4,6))
 
     expect_snapshot(bottle_code({
 

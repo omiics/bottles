@@ -25,7 +25,7 @@
       dplyr and ggplot2
       
       -- Bottled environment: --------------------------------------------------------
-      modify_data and example_data
+      example_data and modify_data
 
 # Creation, running and saving bottles works
 

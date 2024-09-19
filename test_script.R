@@ -9,7 +9,7 @@ example_data <- tibble(
   x = rnorm(300, 20, 10),
   y = rnorm(300, 5, 2),
   z = rnorm(300, 10, 4)
-) %>% mutate(y = y * 0.4 * x)
+) %>% mutate(y = y * x ^ 2)
 
 modify_data <- TRUE
 
@@ -51,3 +51,58 @@ bottle_keywords('{
   \'Some other string\'
 
 }')
+
+
+document()
+load_all()
+
+crate <- Crate$new()
+
+crate$bottle("A")({
+    
+    1 + 1
+
+})
+
+crate$run_bottle("A")
+crate$get_bottle("A")
+
+crate$bottle("A", "B")({
+
+    x <- 50 + 50
+
+    x * 100
+
+})
+
+crate$run_bottle("A", "B")
+crate$get_bottle("A", "B")
+
+modify_data <- FALSE
+
+crate$bottle("example_data", "figure")({
+  
+  if(isTRUE(unshare(modify_data))) {
+    prep_data <- example_data %>%
+      mutate(y = y * 10)
+  } else {
+    prep_data <- example_data
+  }
+  
+  p <- ggplot(prep_data, aes(x, y)) + 
+    geom_point()
+  
+  p + theme_bw()
+  
+})
+
+crate$get_bottle("example_data", "figure")
+crate$run_bottle("example_data", "figure")
+
+crate
+
+
+crate$save("crate.rda")
+
+
+crate2 <- Crate$new(filename = "crate.rda")
