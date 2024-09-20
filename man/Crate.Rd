@@ -25,8 +25,9 @@ Aim to store top level data in the object, and do any specific filtering within 
 \item \href{#method-Crate-run_bottle}{\code{Crate$run_bottle()}}
 \item \href{#method-Crate-print}{\code{Crate$print()}}
 \item \href{#method-Crate-save}{\code{Crate$save()}}
-\item \href{#method-Crate-add_to_env}{\code{Crate$add_to_env()}}
-\item \href{#method-Crate-get_from_env}{\code{Crate$get_from_env()}}
+\item \href{#method-Crate-add_data}{\code{Crate$add_data()}}
+\item \href{#method-Crate-get_data}{\code{Crate$get_data()}}
+\item \href{#method-Crate-ls_data}{\code{Crate$ls_data()}}
 \item \href{#method-Crate-clone}{\code{Crate$clone()}}
 }
 }
@@ -149,20 +150,40 @@ Save the crate as an .rda file.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Crate-add_to_env"></a>}}
-\if{latex}{\out{\hypertarget{method-Crate-add_to_env}{}}}
-\subsection{Method \code{add_to_env()}}{
+\if{html}{\out{<a id="method-Crate-add_data"></a>}}
+\if{latex}{\out{\hypertarget{method-Crate-add_data}{}}}
+\subsection{Method \code{add_data()}}{
+Add data into the shared environment. Bottles can use the shared() function to avoid
+adding the data into it again.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Crate$add_to_env(var, env = parent.frame())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Crate$add_data(var, env = parent.frame())}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{var}}{Variable that should be added to the data}
+
+\item{\code{env}}{Environment the variable is from. Default is the caller environment}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Crate-get_data"></a>}}
+\if{latex}{\out{\hypertarget{method-Crate-get_data}{}}}
+\subsection{Method \code{get_data()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Crate$get_data(var)}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Crate-get_from_env"></a>}}
-\if{latex}{\out{\hypertarget{method-Crate-get_from_env}{}}}
-\subsection{Method \code{get_from_env()}}{
+\if{html}{\out{<a id="method-Crate-ls_data"></a>}}
+\if{latex}{\out{\hypertarget{method-Crate-ls_data}{}}}
+\subsection{Method \code{ls_data()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Crate$get_from_env(var)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Crate$ls_data()}\if{html}{\out{</div>}}
 }
 
 }

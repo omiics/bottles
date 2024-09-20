@@ -26,17 +26,9 @@ R Code Bottle  :-...-:
   }
   
   cli::cli_h1("Bottled environment:")
-  if (class(x$env) == "list") {
-    variables <- cli::cli_vec(ls(x$env), style = list(
-      "vec-sep" = ", ", "vec-last" = " & "
-    ))
-    cli::cli_text("{variables}")
-  } else if (class(x$env) == "environment") {
-    env_vars <- c(ls(x$env), ls(parent.env(x$env)))
-    variables <- cli::cli_vec(env_vars, style = list(
-      "vec-sep" = ", ", "vec-last" = " & "
-    ))
-    cli::cli_text("{variables}")
-  }
+  variables <- cli::cli_vec(ls_bottle(x), style = list(
+    "vec-sep" = ", ", "vec-last" = " & "
+  ))
+  cli::cli_text("{variables}")
    
 }

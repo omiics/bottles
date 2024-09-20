@@ -104,5 +104,13 @@ crate
 
 crate$save("crate.rda")
 
-
 crate2 <- Crate$new(filename = "crate.rda")
+
+big_number <- 10000000000000000000000000000
+
+crate2$add_to_env(big_number)
+
+ls(parent.env(crate2$get_bottle("A", "B")$env))
+
+
+get("big_number", envir=crate2$get_bottle("A", "B")$env)

@@ -92,5 +92,82 @@ test_that("Crate shared env clean build", {
         c("filter_value")
     )
 
+})
+
+test_that("Crate save and load works as expected", {
+
+    # Setup at temporary directory with nothing in it
+    setup_clean_test_env()
+
+    # Initialize the Crate
+    crate <- Crate$new()
+
+    Conditions <- c("A", "B", "C")
+    Comparisons <- list(
+        c("A", "B"),
+        c("A", "C"),
+        c("B", "C")
+    )
+    n <- 1000
+
+    test_dataset <- tibble(
+        Condition = sample(Conditions, n, replace = TRUE),
+        Effect = rgamma(n, shape = 2.5, scale = 0.7),
+        Age = round(rnorm(n, mean = 40, sd = 15), 0)
+    )
+
+    # Add the dataset into the crate
+    crate$add_data(test_dataset)
+
+    for (comp in Comparisons) {
+
+        # Crate
+        crate$bottle(comp[1], comp[2], search_env = environment())({
+
+            # Generate a plot from the comparison
+            shared(test_dataset) %>%
+                filter(Condition %in% unshare(comp)) %>%
+                ggplot(aes(x = Age, y = Effect, color = Condition)) +
+                    geom_point() + theme_bw()
+
+        })
+
+    }
+
+    expect_equal(
+        crate$ls_data(),
+        c("test_dataset")
+    )
+
+    for (comp in Comparisons) {
+        expect_equal(
+            get("comp", envir=crate$get_bottle(comp[1], comp[2])$env),
+            comp
+        )
+    }
+
+    crate$save("crate.rda")
+
+    crate_new <- Crate$new(filename = "crate.rda")
+
+    expect_equal(
+        crate_new$ls_data(),
+        c("test_dataset")
+    )
+
+    for (comp in Comparisons) {
+
+        expect_equal(
+            ls_bottle(crate_new$get_bottle(comp[1], comp[2])),
+            c("comp", "test_dataset")
+        )
+
+        expect_equal(
+            get("comp", envir=crate_new$get_bottle(comp[1], comp[2])$env),
+            comp
+        )
+
+    }
+
 
 })

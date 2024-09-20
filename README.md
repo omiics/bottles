@@ -1,7 +1,7 @@
 # Bottles - Containerize code snippets <img border="0" src="man/figures/logo.png" alt="The 'bottles' hexlogo" align="right" style="width: 100px"/>
 
 <!-- badges: start -->
-  [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+  [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
   <!-- badges: end -->
 
 ## Purpose

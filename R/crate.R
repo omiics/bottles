@@ -10,6 +10,8 @@
 #' This means that if you have variables that overlab in the bottles, they will all have the same value.
 #' Aim to store top level data in the object, and do any specific filtering within the bottle!
 #' 
+#' @export 
+#'
 #' @importFrom R6 R6Class
 #' @importFrom rlang new_environment
 Crate <- R6Class("Crate",
@@ -118,7 +120,7 @@ Crate <- R6Class("Crate",
             }
 
             cli::cli_h1("Shared data environment:")
-            variables <- cli::cli_vec(names(private$data_env), style = list(
+            variables <- cli::cli_vec(self$ls_data(), style = list(
                 "vec-sep" = ", ", "vec-last" = " & "
             ))
             cli::cli_text("{variables}")
@@ -146,9 +148,15 @@ Crate <- R6Class("Crate",
 
         },
 
-        add_to_env = function(var, env = parent.frame()) {
+        #' @description
+        #' Add data into the shared environment. Bottles can use the shared() function to avoid
+        #' adding the data into it again.
+        #' 
+        #' @param var     Variable that should be added to the data
+        #' @param env     Environment the variable is from. Default is the caller environment
+        add_data = function(var, env = parent.frame()) {
 
-            varname <- deparse(substitute(expr))
+            varname <- deparse(substitute(var))
 
             if (!(varname %in% names(env))) {
                 cli::cli_abort(
@@ -162,10 +170,22 @@ Crate <- R6Class("Crate",
 
         },
 
-        get_from_env = function(var) {
+        #' @description
+        #' Retreive a variable from the share data environment
+        #' 
+        #' @param var   Variable in the shared data environment
+        #' 
+        #' @return The data of the variable or NULL if it does not exist
+        get_data = function(var) {
             varname <- deparse(substitute(var))
 
             private$data_env[[varname]]
+        },
+
+        #' @description
+        #' Get a
+        ls_data = function() {
+            ls(private$data_env)
         }
 
     ),
@@ -177,18 +197,26 @@ Crate <- R6Class("Crate",
         # Shared packages
         packages = NULL,
         
+        # Provide an interface to make an id for the store from dots
         create_id = function(...) {
             paste(..., sep = "<=>")
         },
 
+        # Deconstruct an Id
         deconstruct_id = function(id) {
             unlist(stringr::str_split(id, fixed("<=>")))
         },
 
+        # Short hand for updating and merging packages from 
         merge_packages = function(packages) {
             private$packages <- unique(c(private$packages, packages))
         },
 
+        # Move items from the bottle to the shared environment
+        # Anything listed in unshare will be ignored
+        # Produces warning if there is an overlap with existing data in the share environment
+        # It will not replace the data
+        # Use shared() to denote that it already is in the shared environment to avoid the warning message
         move_to_data_env = function(source_env, unshare, warn = TRUE) {
             list_data_env <- ls(private$data_env)
             list_env <- ls(source_env)
@@ -212,6 +240,7 @@ Crate <- R6Class("Crate",
             }
         },
 
+        # Adds the bottle assigned to the specific id
         add = function(bottle, id, warn = TRUE) {
 
             # Merge package information
@@ -232,6 +261,7 @@ Crate <- R6Class("Crate",
             
         },
 
+        # Internal function for loading the data from file
         load_from_file = function(filename) {
 
             unload_env <- new.env()
