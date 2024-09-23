@@ -4,16 +4,27 @@
 \alias{bottle_code}
 \title{Bottle code}
 \usage{
-bottle_code(expr, packages = NULL, env = parent.frame(), debug = FALSE)
+bottle_code(
+  expr,
+  packages = NULL,
+  env = parent.frame(),
+  debug = FALSE,
+  deparse = TRUE,
+  crate_storage = FALSE
+)
 }
 \arguments{
-\item{expr}{code block that should be bottled}
+\item{expr}{Code block that should be bottled}
 
 \item{packages}{Specify which packages should be used to run the code}
 
 \item{env}{Environment that the bottle should be based on. Default is parent environment}
 
 \item{debug}{Run a detailed debug mode to see what steps the function is taking}
+
+\item{deparse}{Should the expr variable be deparsed. Default TRUE. Set to FALSE if you are providing already deparsed code.}
+
+\item{crate_storage}{Used internally by Crate. Applies the effects of the shared, unshare and ignore functions}
 }
 \value{
 bottle with code inside

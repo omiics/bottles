@@ -26,9 +26,9 @@ R Code Bottle  :-...-:
   }
   
   cli::cli_h1("Bottled environment:")
-  variables <- cli::cli_vec(names(x$env), style = list(
+  variables <- cli::cli_vec(ls_bottle(x), style = list(
     "vec-sep" = ", ", "vec-last" = " & "
   ))
   cli::cli_text("{variables}")
-  
+   
 }

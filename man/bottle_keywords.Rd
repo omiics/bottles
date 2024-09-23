@@ -4,10 +4,15 @@
 \alias{bottle_keywords}
 \title{Find all keywords for bottle}
 \usage{
-bottle_keywords(expr_str)
+bottle_keywords(expr_str, crate_storage = FALSE)
 }
 \arguments{
-\item{expr_str}{}
+\item{expr_str}{String with the code expression to be analysed}
+
+\item{crate_storage}{Used internally to denote that it should consider the shared, unshare and ignore functions when used in a Crate}
+}
+\value{
+Vector of keywords detected in the code
 }
 \description{
 Look for all of the keywords from the code block and return all of the unique entries

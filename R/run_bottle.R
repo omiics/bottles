@@ -3,18 +3,11 @@ run_bottle <- function(bottle) UseMethod("run_bottle")
 
 #' @export
 run_bottle.bottle <- function(bottle) {
-  
-  # If there are packages add them all together
-  run_eval <- function(code, env){
-    eval(parse(text = code), envir = env)
-  }
-  
+    
   # Attach any required packages for the bottle
   if (!is.null(bottle$packages)){
     
     for (package in bottle$packages) {
-      
-      # Experiment with using box?
       
       # Skip if package already is loaded (Avoids unloading after the bottle is run)
       if (package %in% (.packages())) next
@@ -32,7 +25,18 @@ run_bottle.bottle <- function(bottle) {
   
   # Run the code and capture errors in an elegant way
   tryCatch({
-    eval(parse(text = bottle$code), envir = bottle$env)
+    if (class(bottle$env) == "list") {
+      eval(parse(text = bottle$code), envir = bottle$env)
+    } else if (class(bottle$env) == "environment") {
+      eval(parse(text = bottle$code), envir = new.env(parent=bottle$env))
+    } else {
+      cli::cli_abort(
+        c(
+          "x" = "Unable to run the code and the stored environment is of an unexpected type",
+          "i" = "Class is {class(bottle$env)} and must be either a list or an environment!"
+        )
+      )
+    }
   }, error = function(cond) {
     
     cli::cli_abort(

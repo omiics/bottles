@@ -1,7 +1,7 @@
 # Bottles - Containerize code snippets <img border="0" src="man/figures/logo.png" alt="The 'bottles' hexlogo" align="right" style="width: 100px"/>
 
 <!-- badges: start -->
-  [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+  [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-green.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
   <!-- badges: end -->
 
 ## Purpose
@@ -82,6 +82,8 @@ R Code Bottle  :-...-:
 {
     if (isTRUE(modify_data)) {
         prep_data <- example_data %>% mutate(y = y * 10)
+    } else {
+        prep_data <- example_data
     }
     p <- ggplot(prep_data, aes(x, y)) + geom_point()
     p + theme_bw()
@@ -92,4 +94,109 @@ dplyr & ggplot2
 
 ── Bottled environment: ────────────────────────────────────────────────────────────
 modify_data & example_data
+```
+
+## Crates - share data between bottles
+
+When working with multiple bottles and saving them to disk there can be an overlap in the stored data in the environments. Therefore we created a data structure called a Crate, which can store multiple bottles inside and share data between them. This can make storing the bottles for later use much more efficient as you don't need to have duplicated data stored on disk.
+
+The Crate is implemented as an R6 class and can be created with the `$new()` function.
+
+```r
+crate <- Crate$new()
+```
+
+To bottle some code you can use the `$bottle` function. Since you can store multiple bottles you need an ID to reference particular bottles. Here is an example of how to bottle some code:
+
+```r
+
+crate$bottle("Analysis", "Scatterplot")({
+
+  ggplot(example_data, aes(x = Age, y = Height)) +
+    geom_point() + theme_bw()
+
+})
+
+```
+
+A short hand to remember the structure is `$bottle(...)({ code })`. First you input the values that make up the id, which returns a function that will insert the provided code as an item into the crate.
+
+### Sharing data between bottles
+
+By default when adding bottle to the crate it will automatically collect all of the variables used and add them to the shared environment. However any duplicates of the variables will be ignored and a warning will be produced.
+
+The proper way to handle shared data is to first add the data to the crate using `$add_data()`, and then using `shared()` in the bottle to denote that the variable is already shared in the crate
+
+```r
+
+crate$add_data(big_dataset)
+
+crate$bottle("Analysis", "Scatterplot")({
+
+  ggplot(shared(big_dataset), aes(x = Age, y = Height)) +
+    geom_point() + theme_bw()
+
+})
+
+```
+
+The opposite case can also happen where you do not want a variable to be shared in the crate, and should only be local to the specific bottle. This can be variables from a for loop generating multiple bottles.
+
+Here you can use the `unshare()` function to mark a variable as something that should be ignored, but still kept in the bottles own environment. A use case is in a for loop where you want to generate figures based on filters placed on a large shared dataset.
+
+```r
+
+crate$add_data(big_dataset)
+
+for (country in countries) {
+
+  crate$bottle("Analysis", country, "Scatterplot")({
+
+    shared(big_dataset) %>%
+      filter(country == !!unshare(country)) %>%
+      ggplot(aes(x = Age, y = Height)) +
+        geom_point() + theme_bw()
+
+  })
+
+}
+
+```
+
+Finally you can use the `ignore()` function to get the bottle to completely ignore the variable. This can be useful if you get some variables added you do not want to be present.
+
+### Running bottles
+
+To run a bottle you can use the `$run_bottle()` function where you provide the same input id you used to bottle it with.
+
+```r
+
+result <- crate$run_bottle("Analysis", "Scatterplot")
+
+```
+
+Similarily you can use the `$get_bottle()` function to get the bottle as a standalone object. It still has access to the shared environment in the Crate, as long as the crate still exists.
+
+```r
+
+bottle <- crate$get_bottle("Analysis", "Scatterplot")
+
+```
+
+### Saving and loading Crates
+
+A crate can be saved using the `$save()` function. The file is stored as a RData file which perserves the whole structure of the crate.
+
+```r
+
+crate$save('crate.rda')
+
+```
+
+To load from file again you can initialize the Crate using the `$new()` function and provide a filename to read from.
+
+```r
+
+crate <- Crate$new(filename = 'crate.rda')
+
 ```
