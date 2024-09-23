@@ -2,10 +2,16 @@
 % Please edit documentation in R/bottle_code.R
 \name{ignore}
 \alias{ignore}
-\title{Mark a variable to be ignored by the}
+\title{Mark a variable to be ignored by the keyword detection}
 \usage{
 ignore(var)
 }
+\arguments{
+\item{var}{Variable to be marked}
+}
+\value{
+return the var without any modifications
+}
 \description{
-Mark a variable to be ignored by the
+Can be used as a quick fix if unexpected values or packages are added to the bottle environment
 }

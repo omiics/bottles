@@ -27,7 +27,9 @@ Aim to store top level data in the object, and do any specific filtering within 
 \item \href{#method-Crate-save}{\code{Crate$save()}}
 \item \href{#method-Crate-add_data}{\code{Crate$add_data()}}
 \item \href{#method-Crate-get_data}{\code{Crate$get_data()}}
+\item \href{#method-Crate-rm_data}{\code{Crate$rm_data()}}
 \item \href{#method-Crate-ls_data}{\code{Crate$ls_data()}}
+\item \href{#method-Crate-ls_bottles}{\code{Crate$ls_bottles()}}
 \item \href{#method-Crate-clone}{\code{Crate$clone()}}
 }
 }
@@ -43,6 +45,8 @@ Constructor function
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{filename}}{Load the Crate from file. Overwrites all behaviour}
+
 \item{\code{packages}}{Add some packages that should be loaded with any bottle}
 }
 \if{html}{\out{</div>}}
@@ -173,19 +177,64 @@ adding the data into it again.
 \if{html}{\out{<a id="method-Crate-get_data"></a>}}
 \if{latex}{\out{\hypertarget{method-Crate-get_data}{}}}
 \subsection{Method \code{get_data()}}{
+Retreive a variable from the share data environment
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Crate$get_data(var)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{var}}{Variable in the shared data environment}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The data of the variable or NULL if it does not exist
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Crate-rm_data"></a>}}
+\if{latex}{\out{\hypertarget{method-Crate-rm_data}{}}}
+\subsection{Method \code{rm_data()}}{
+Remove a variable from the the shared data environment
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Crate$rm_data(var)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{var}}{Variable in the shared data environment}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Crate-ls_data"></a>}}
 \if{latex}{\out{\hypertarget{method-Crate-ls_data}{}}}
 \subsection{Method \code{ls_data()}}{
+List all of the names in the shared data environment
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Crate$ls_data()}\if{html}{\out{</div>}}
 }
 
+\subsection{Returns}{
+Names of items in the share data environment
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Crate-ls_bottles"></a>}}
+\if{latex}{\out{\hypertarget{method-Crate-ls_bottles}{}}}
+\subsection{Method \code{ls_bottles()}}{
+Get the names of each of the bottles stored in the crate
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Crate$ls_bottles()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+List of input names
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Crate-clone"></a>}}

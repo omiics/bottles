@@ -1,3 +1,4 @@
+#' @title List bottle environment
 #' @description
 #' List all of the items available in the environment
 #' Considers both the standalone bottle case and the bottles from crates with shared environments

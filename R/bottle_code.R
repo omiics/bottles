@@ -104,7 +104,7 @@ bottle_code <- function(expr, packages = NULL, env = parent.frame(), debug = FAL
 #' Look for all of the keywords from the code block and return all of the unique entries
 #' 
 #' @param expr_str       String with the code expression to be analysed
-#' @param crate_storage  
+#' @param crate_storage  Used internally to denote that it should consider the shared, unshare and ignore functions when used in a Crate
 #' 
 #' @return Vector of keywords detected in the code
 bottle_keywords <- function(expr_str, crate_storage = FALSE) {
@@ -192,7 +192,7 @@ unshare <- function(var) {
 #' @description 
 #' Can be used as a quick fix if unexpected values or packages are added to the bottle environment
 #' 
-#' @param var
+#' @param var  Variable to be marked
 #' 
 #' @return return the var without any modifications
 #' @export

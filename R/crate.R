@@ -20,6 +20,7 @@ Crate <- R6Class("Crate",
         #' @description
         #' Constructor function
         #' 
+        #' @param filename   Load the Crate from file. Overwrites all behaviour
         #' @param packages   Add some packages that should be loaded with any bottle
         #' 
         #' @return [Crate]
@@ -231,7 +232,7 @@ Crate <- R6Class("Crate",
 
         # Deconstruct an Id
         deconstruct_id = function(id) {
-            unlist(stringr::str_split(id, fixed("<=>")))
+            unlist(stringr::str_split(id, stringr::fixed("<=>")))
         },
 
         # Short hand for updating and merging packages from 

@@ -10,7 +10,7 @@
                  v1  |     |
                      |     |
                      `-...-' 
-    Message <cliMessage>
+    Message
       
       -- Bottled code: ---------------------------------------------------------------
       {
@@ -35,7 +35,7 @@
         x$x <- x$x * 2
         x
       }, debug = TRUE)
-    Message <cliMessage>
+    Message
       i Running bottle_code debug mode!
       i Detecting keywords
       i Found keywords: tribble and x
@@ -59,7 +59,7 @@
                  v1  |     |
                      |     |
                      `-...-' 
-    Message <cliMessage>
+    Message
       
       -- Bottled code: ---------------------------------------------------------------
       {
