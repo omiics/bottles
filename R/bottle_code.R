@@ -169,6 +169,7 @@ bottle_keywords <- function(expr_str, crate_storage = FALSE) {
 #' @param var   Variable to be marked
 #' 
 #' @return return the var without any modifications
+#' @export
 shared <- function(var) {
   var
 }
@@ -181,12 +182,20 @@ shared <- function(var) {
 #' @param var   Variable to be marked
 #' 
 #' @return return the var without any modifications
+#' @export
 unshare <- function(var) {
   var
 }
 
-#' Mark a variable to be ignored by the 
+#' Mark a variable to be ignored by the keyword detection
 #' 
+#' @description 
+#' Can be used as a quick fix if unexpected values or packages are added to the bottle environment
+#' 
+#' @param var
+#' 
+#' @return return the var without any modifications
+#' @export
 ignore <- function(var) {
   var
 }
