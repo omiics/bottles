@@ -171,3 +171,85 @@ test_that("Crate save and load works as expected", {
 
 
 })
+
+
+test_that("Adding, getting, removing and listing environments works in Crates", {
+
+    crate <- Crate$new()
+
+    A <- 1000
+    B <- 2000
+    C <- 3000
+
+    crate$add_data(A)
+
+    expect_setequal(crate$ls_data(), c("A"))
+    expect_equal(crate$get_data(A), A)
+
+    crate$add_data(B)
+
+    expect_setequal(crate$ls_data(), c("A", "B"))
+    expect_equal(crate$get_data(B), B)
+
+    crate$add_data(C)
+
+    expect_setequal(crate$ls_data(), c("A", "B", "C"))
+    expect_equal(crate$get_data(C), C)
+
+    expect_error(
+        crate$add_data(D),
+        "`D` does not exist in the environment"
+    )
+
+    # Try removing an item
+    crate$rm_data("B")
+
+    expect_setequal(crate$ls_data(), c("A", "C"))
+
+    # List with no bottles
+    expect_equal(
+        crate$ls_bottles(),
+        list()
+    )
+
+    # Add a bottle
+    crate$bottle("A", "plus", "C", search_env = environment())({
+
+        shared(A) + shared(C)
+
+    })
+
+    # Run the bottle
+    expect_equal(
+        crate$run_bottle("A", "plus", "C"),
+        4000
+    )
+
+    # Check list of bottles now
+    expect_equal(
+        crate$ls_bottles(),
+        list(
+            c("A", "plus", "C")
+        )
+    )
+
+    crate$bottle("A", "plus", "B", search_env = environment())({
+
+        shared(A) + shared(B)
+
+    })
+
+    expect_error(
+        crate$run_bottle("A", "plus", "B"),
+        "object 'B' not found"
+    )
+
+    expect_equal(
+        crate$ls_bottles(),
+        list(
+            c("A", "plus", "B"),
+            c("A", "plus", "C")
+        )
+    )
+
+})

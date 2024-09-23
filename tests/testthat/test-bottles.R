@@ -177,7 +177,7 @@ test_that("Creation, running and saving bottles works", {
 test_that("Test error in bottle", {
 
     # Note invalid syntax not possible
-    # The code block {} will always be evaluated
+    # The code block {} will always be evaluated for syntax errors
 
     force_low_value <- function(value) {
         if (value > 10) {
@@ -199,6 +199,27 @@ test_that("Test error in bottle", {
 
     expect_error(run_bottle(bottle), "Value must be lower than 10!")
 
+})
 
+test_that("Test malformed bottle errors", {
+
+    bottle <- bottle_code({
+
+        1 + 1
+    
+    })
+
+    # Make the environment malformed
+    bottle$env <- c(1,2,3,4)
+
+    expect_error(
+        run_bottle(bottle),
+        "Unable to run the code and the stored environment is of an unexpected type"
+    )
+
+    expect_error(
+        ls_bottle(bottle),
+        "Bottle is malformed. The environment must be either a list or a environment!"
+    )
 
 })

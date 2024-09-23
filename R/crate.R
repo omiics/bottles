@@ -183,9 +183,36 @@ Crate <- R6Class("Crate",
         },
 
         #' @description
-        #' Get a
+        #' Remove a variable from the the shared data environment
+        #' 
+        #' @param var   Variable in the shared data environment
+        rm_data = function(var) {
+            rm(list = var, envir = private$data_env)
+        },
+
+        #' @description
+        #' List all of the names in the shared data environment
+        #' 
+        #' @return Names of items in the share data environment
         ls_data = function() {
             ls(private$data_env)
+        },
+
+        #' @description
+        #' Get the names of each of the bottles stored in the crate
+        #' 
+        #' @return List of input names
+        ls_bottles = function() {
+            ids <- ls(private$bottle_store)
+
+            deconstructed_ids <- list()
+
+            for (i in seq_along(ids)) {
+                deconstructed_ids[[i]] <- private$deconstruct_id(ids[i])
+            }
+
+            deconstructed_ids
+
         }
 
     ),
