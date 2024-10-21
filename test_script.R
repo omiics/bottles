@@ -13,14 +13,18 @@ example_data <- tibble(
 
 modify_data <- TRUE
 
+isReallyTRUE <- function(x) {
+  isTRUE(y)
+}
+
 bottle <- bottle_code({
   
-  if(isTRUE(modify_data)) {
+  if(isReallyTRUE(modify_data)) {
     prep_data <- example_data %>%
       mutate(y = y * 10)
   }
   
-  p <- ggplot(prep_data, aes(x, y)) + 
+  p <- ggplot(pre_data, aes(x, y)) + 
     geom_point()
   
   p + theme_bw()
