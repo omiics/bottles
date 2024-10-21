@@ -22,13 +22,37 @@ run_bottle.bottle <- function(bottle) {
     }
     
   }
-  
+
+  # Extend the bottle code
+  code <- bottle$code
+
+  # Add tryCatch and provide a more detailed error message
+  code <- c(
+    "tryCatch({
+",
+    code,
+"}, error = function(cond) {
+  call <- deparse(cond$call)
+  call_chars <- as.character(cond$call)
+  if (call_chars[1] == 'eval') {
+    call_text <- ''
+  } else {
+    call_text <- glue::glue('|=| Call: {call} ')
+  }
+  packages <- .packages()
+  environment_data <- ls(rlang::env_parent())
+  cli::cli_abort(
+    'Error: {cond$message} {call_text}|=| Environment: {environment_data} |=| Packages: {packages}'
+  )
+})"
+  )
+ 
   # Run the code and capture errors in an elegant way
   tryCatch({
     if (class(bottle$env) == "list") {
-      eval(parse(text = bottle$code), envir = bottle$env)
+      eval(parse(text = code), envir = bottle$env)
     } else if (class(bottle$env) == "environment") {
-      eval(parse(text = bottle$code), envir = new.env(parent=bottle$env))
+      eval(parse(text = code), envir = new.env(parent=bottle$env))
     } else {
       cli::cli_abort(
         c(
@@ -43,7 +67,7 @@ run_bottle.bottle <- function(bottle) {
       c("Evaluation of bottle failed!",
         "i" = "Execution of the bottle has failed as there might be an error or an object referenced is missing!",
         "x" = "Original execution error:",
-        "x" = "\t{cond$message}")
+        "x" = "{cond$message}")
     )
     
   })
