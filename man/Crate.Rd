@@ -22,7 +22,9 @@ Aim to store top level data in the object, and do any specific filtering within 
 \item \href{#method-Crate-new}{\code{Crate$new()}}
 \item \href{#method-Crate-bottle}{\code{Crate$bottle()}}
 \item \href{#method-Crate-get_bottle}{\code{Crate$get_bottle()}}
+\item \href{#method-Crate-get_bottle_dyn}{\code{Crate$get_bottle_dyn()}}
 \item \href{#method-Crate-run_bottle}{\code{Crate$run_bottle()}}
+\item \href{#method-Crate-run_bottle_dyn}{\code{Crate$run_bottle_dyn()}}
 \item \href{#method-Crate-print}{\code{Crate$print()}}
 \item \href{#method-Crate-save}{\code{Crate$save()}}
 \item \href{#method-Crate-add_data}{\code{Crate$add_data()}}
@@ -98,6 +100,26 @@ Bottle if present otherwise NULL
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Crate-get_bottle_dyn"></a>}}
+\if{latex}{\out{\hypertarget{method-Crate-get_bottle_dyn}{}}}
+\subsection{Method \code{get_bottle_dyn()}}{
+Get a bottle from the crate using a vector of ids
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Crate$get_bottle_dyn(vec)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{vec}}{Vector of ids of the bottle}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Bottle if present otherwise NULL
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Crate-run_bottle"></a>}}
 \if{latex}{\out{\hypertarget{method-Crate-run_bottle}{}}}
 \subsection{Method \code{run_bottle()}}{
@@ -110,6 +132,26 @@ Run bottle with a specific id from the crate
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{...}}{Id of the bottle}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+Result of the bottle
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Crate-run_bottle_dyn"></a>}}
+\if{latex}{\out{\hypertarget{method-Crate-run_bottle_dyn}{}}}
+\subsection{Method \code{run_bottle_dyn()}}{
+Run a bottle with a specific id from the crate, using a vector of the id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Crate$run_bottle_dyn(vec)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{vec}}{Id in the form of a vector}
 }
 \if{html}{\out{</div>}}
 }
