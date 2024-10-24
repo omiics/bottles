@@ -13,7 +13,7 @@
 #' @export 
 #'
 #' @importFrom R6 R6Class
-#' @importFrom rlang new_environment
+#' @importFrom rlang new_environment inject
 Crate <- R6Class("Crate",
     public = list(
 
@@ -77,6 +77,20 @@ Crate <- R6Class("Crate",
         },
 
         #' @description
+        #' Get a bottle from the crate using a vector of ids
+        #' 
+        #' @param vec  Vector of ids of the bottle
+        #' 
+        #' @return Bottle if present otherwise NULL
+        get_bottle_dyn = function(vec) {
+
+            id <- inject(private$create_id(!!vec, sep = FALSE))
+
+            private$bottle_store[[id]]
+
+        },
+
+        #' @description
         #' Run bottle with a specific id from the crate
         #' 
         #' @param ... Id of the bottle
@@ -85,6 +99,20 @@ Crate <- R6Class("Crate",
         run_bottle = function(...) {
 
             id <- private$create_id(...)
+
+            run_bottle(private$bottle_store[[id]])
+
+        },
+
+        #' @description
+        #' Run a bottle with a specific id from the crate, using a vector of the id
+        #' 
+        #' @param vec  Id in the form of a vector
+        #' 
+        #' @return Result of the bottle
+        run_bottle_dyn = function(vec) {
+
+            id <- inject(private$create_id(!!vec, sep = FALSE))
 
             run_bottle(private$bottle_store[[id]])
 
@@ -226,8 +254,12 @@ Crate <- R6Class("Crate",
         packages = NULL,
         
         # Provide an interface to make an id for the store from dots
-        create_id = function(...) {
-            paste(..., sep = "<=>")
+        create_id = function(..., sep = TRUE) {
+            if (sep) {
+                paste(..., sep = "<=>")
+            } else {
+                paste(..., collapse = "<=>")
+            }
         },
 
         # Deconstruct an Id

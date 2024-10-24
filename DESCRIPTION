@@ -1,6 +1,6 @@
 Package: bottles
 Title: Containerized R code in bottles
-Version: 1.1.0
+Version: 1.2.0
 Authors@R: 
     person("Marni", "Tausen", , "marni.tausen@omiics.com", role = c("aut", "cre"))
 Description: Containerize R code into a small reproducible unit called a bottle. The bottle saves the variables from the environment required to run the code, and captures the packages used for the code.
