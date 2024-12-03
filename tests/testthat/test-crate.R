@@ -50,14 +50,26 @@ test_that("Crate shared env clean build", {
         crate$run_bottle("X", "FilterAbove10")$x,
         11:20
     )
+    expect_equal(
+        crate$run_bottle_dyn(c("X", "FilterAbove10"))$x,
+        11:20
+    )
 
     expect_equal(
         crate$run_bottle("X", "FilterAbove5")$x,
         6:20
     )
+    expect_equal(
+        crate$run_bottle_dyn(c("X", "FilterAbove5"))$x,
+        6:20
+    )
 
     expect_equal(
         crate$run_bottle("X", "FilterAbove15")$x,
+        16:20
+    )
+    expect_equal(
+        crate$run_bottle_dyn(c("X", "FilterAbove15"))$x,
         16:20
     )
 

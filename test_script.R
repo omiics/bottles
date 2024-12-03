@@ -19,13 +19,14 @@ isReallyTRUE <- function(x) {
 
 bottle <- bottle_code({
   
-  if(isReallyTRUE(modify_data)) {
+  if(isTRUE(modify_data)) {
     prep_data <- example_data %>%
       mutate(y = y * 10)
   }
   
-  p <- ggplot(pre_data, aes(x, y)) + 
-    geom_point()
+  p <- ggplot(prep_data, aes(x, y)) + 
+    geom_point() + 
+    labs(x = "", y = y_axis_name)
   
   p + theme_bw()
   

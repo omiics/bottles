@@ -32,7 +32,7 @@ run_bottle.bottle <- function(bottle) {
 ",
     code,
 "}, error = function(cond) {
-  call <- deparse(cond$call)
+  call <- bottles::deparse_to_one_line(cond$call)
   call_chars <- as.character(cond$call)
   if (call_chars[1] == 'eval') {
     call_text <- ''
